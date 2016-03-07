@@ -13,20 +13,28 @@ gulp.task('format-json', function(done) {
 });
 
 gulp.task('format-js', function(done) {
-  return gulp.src('lib/*.js').pipe(esformatter()).pipe(gulp.dest('lib'));
+  return gulp.src('lib/*.js').pipe(esformatter({
+    "plugins": ["esformatter-eol-last"]
+  })).pipe(gulp.dest('lib'));
 });
 
 gulp.task('format-gulpfile', function(done) {
-  return gulp.src('gulpfile.js').pipe(esformatter()).pipe(gulp.dest('dist'));
+  return gulp.src('gulpfile.js').pipe(esformatter({
+    "plugins": ["esformatter-eol-last"]
+  })).pipe(gulp.dest('.'));
 });
 
 gulp.task('tidy', ['format-json', 'format-js', 'format-gulpfile'], function(done) {});
 
-gulp.task('default', function(done) {
+gulp.task('lint', function(done) {
   return gulp.src('lib/*.js')
     .pipe(eslint())
     .pipe(eslint.format())
-    .pipe(eslint.failAfterError())
+    .pipe(eslint.failAfterError());
+});
+
+gulp.task('default', ['lint'], function(done) {
+  return gulp.src('lib/*.js')
     .pipe(ngAnnotate())
     .pipe(babel({
       presets: ['es2015']
