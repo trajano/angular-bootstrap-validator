@@ -1,15 +1,33 @@
 {
-  "name": "angular-bootstrap-validator",
-  "version": "1.0.0",
-  "homepage": "http://github.com/trajano/angular-bootstrap-validator",
-  "authors": [
-    "Archimedes Trajano <developer@trajano.net>"
-  ],
-  "description": "Provides a directive that enables validations using AngularJS with forms that are marked up with bootstrap classes.",
-  "license": "EPL",
-  "main" : "./angular-bootstrap-validator.js",
-  "dependencies": {
-    "angular": "~1.5.0",
-    "jquery": "~1.11.3"
-  }
+    "name": "angular-bootstrap-validator",
+    "homepage": "http://github.com/trajano/angular-bootstrap-validator",
+    "authors": [
+        "Archimedes Trajano <developer@trajano.net>"
+    ],
+    "description": "Provides a directive that enables validations using AngularJS with forms that are marked up with bootstrap classes.",
+    "license": "EPL-1.0",
+    "main": "lib/angular-bootstrap-validator.js",
+    "keywords": [
+        "bootstrap",
+        "bootstrap3",
+        "jquery",
+        "form",
+        "validator",
+        "validation",
+        "angularjs"
+    ],
+    "ignore": [
+        "**/.*",
+        "_*",
+        "node_modules",
+        "bower_components",
+        "docs-assets",
+        "LICENSE",
+        "Gruntfile.js",
+        "*.html"
+    ],
+    "dependencies": {
+        "angular": "~1.5.0",
+        "jquery": "~1.11.3"
+    }
 }

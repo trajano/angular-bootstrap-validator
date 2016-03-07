@@ -1,0 +1,10 @@
+{
+    "dependencies": {
+        "gulp-es6-transpiler": "*",
+        "gulp-esformatter": "*",
+        "gulp-eslint": "*",
+        "gulp-json-format": "*",
+        "gulp-minify": "*",
+        "gulp-ng-annotate": "*"
+    }
+}
