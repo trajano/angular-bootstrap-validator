@@ -1,4 +1,28 @@
+var NG_HIDE_CLASS = 'ng-hide';
+var NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';
+
 angular.module('angular.bootstrap.validator', [])
+  .directive('abvError', function($animate, $compile, $interpolate) {
+    return {
+      restrict: 'A',
+      scope: {
+        validatorName: '@abvError'
+      },
+      require: '^form',
+      terminal: true,
+      link: (scope, element, attrs, form) => {
+        var controlName = element.siblings('.form-control')[0].name;
+        var formName = '$parent.' + form.$name;
+        var formNameSubmittedAnd = formName + '.$submitted && ';
+        var watchExpr = formNameSubmittedAnd + formName + '.' + controlName + '.$error.' + scope.validatorName;
+        scope.$watch(watchExpr, (value) => {
+          $animate[value ? 'removeClass' : 'addClass'](element, NG_HIDE_CLASS, {
+            tempClasses: NG_HIDE_IN_PROGRESS_CLASS
+          });
+        });
+      }
+    };
+  })
   .directive('abvIdentical', function() {
     return {
       restrict: 'A',
@@ -44,7 +68,7 @@ angular.module('angular.bootstrap.validator', [])
       require: 'form',
       restrict: 'A',
       terminal: true,
-      compile: function (tElement, tAttrs) {
+      compile: function(tElement, tAttrs) {
         return (scope, element, attr, controller) => {
           var formName = controller.$name;
           var formNameSubmittedAnd = formName + '.$submitted && ';
@@ -78,13 +102,8 @@ angular.module('angular.bootstrap.validator', [])
                 control.after('<span class="glyphicon glyphicon-remove form-control-feedback" ng-if="' + formNameSubmittedAnd + formName + '.' + controlName + '.$invalid' + '" aria-hidden="true"></span>');
               }
 
+              // set the has-error CSS if the form has been submitted
               $(formGroup).attr('ng-class', '{"has-error": ' + formNameSubmittedAnd + formName + '.' + controlName + '.$invalid }');
-              // help blocks for error messages
-
-              $(formGroup).find('.help-block[data-abv-error],.help-block[abv-error]').each((index, helpBlock) => {
-                var errorField = $(helpBlock).data('abv-error') || $(helpBlock).attr('abv-error');
-                $(helpBlock).attr('ng-show', formNameSubmittedAnd + formName + '.' + controlName + '.$error.' + errorField);
-              });
             }
           });
           $compile(element.contents())(scope);
