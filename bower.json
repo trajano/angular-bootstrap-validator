@@ -18,12 +18,12 @@
     ],
     "ignore": [
         "**/.*",
-        "_*",
+        "spec",
         "node_modules",
         "bower_components",
         "docs-assets",
         "LICENSE",
-        "Gruntfile.js",
+        "gulpfile.js",
         "*.html"
     ],
     "dependencies": {
