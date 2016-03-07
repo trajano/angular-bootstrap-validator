@@ -12,9 +12,8 @@ angular.module('angular.bootstrap.validator', [])
       terminal: true,
       link: (scope, element, attrs, form) => {
         var controlName = element.siblings('.form-control')[0].name;
-        var formName = '$parent.' + form.$name;
-        var formNameSubmittedAnd = formName + '.$submitted && ';
-        var watchExpr = formNameSubmittedAnd + formName + '.' + controlName + '.$error.' + scope.validatorName;
+        var formName = `$parent.${form.$name}`;
+        var watchExpr =`${formName}.$submitted && ${formName}.${controlName}.$error.${scope.validatorName}`;
         scope.$watch(watchExpr, (value) => {
           $animate[value ? 'removeClass' : 'addClass'](element, NG_HIDE_CLASS, {
             tempClasses: NG_HIDE_IN_PROGRESS_CLASS
@@ -71,10 +70,9 @@ angular.module('angular.bootstrap.validator', [])
       compile: function(tElement, tAttrs) {
         return (scope, element, attr, controller) => {
           var formName = controller.$name;
-          var formNameSubmittedAnd = formName + '.$submitted && ';
 
           // disable submit buttons when the form is invalid after submit
-          element.find('button[type="submit"]').attr("ng-disabled", formNameSubmittedAnd + formName + '.$invalid');
+          element.find('button[type="submit"]').attr("ng-disabled", `${formName}.$submitted && ${formName}.$invalid`);
 
           // disable native form validation because the validation is handled by Angular
           element.attr('novalidate', 'novalidate');
@@ -98,12 +96,12 @@ angular.module('angular.bootstrap.validator', [])
 
               // add feedback icons
               if ($(formGroup).hasClass('has-feedback')) {
-                control.after('<span class="glyphicon glyphicon-ok form-control-feedback" ng-if="' + formNameSubmittedAnd + formName + '.' + controlName + '.$valid' + '" aria-hidden="true"></span>');
-                control.after('<span class="glyphicon glyphicon-remove form-control-feedback" ng-if="' + formNameSubmittedAnd + formName + '.' + controlName + '.$invalid' + '" aria-hidden="true"></span>');
+                control.after(`<span class="glyphicon glyphicon-ok form-control-feedback" ng-if="${formName}.$submitted && ${formName}.${controlName}.$valid" aria-hidden="true"></span>`);
+                control.after(`<span class="glyphicon glyphicon-remove form-control-feedback" ng-if="${formName}.$submitted && ${formName}.${controlName}.$invalid" aria-hidden="true"></span>`);
               }
 
               // set the has-error CSS if the form has been submitted
-              $(formGroup).attr('ng-class', '{"has-error": ' + formNameSubmittedAnd + formName + '.' + controlName + '.$invalid }');
+              $(formGroup).attr('ng-class', `{"has-error": ${formName}.$submitted && ${formName}.${controlName}.$invalid }`);
             }
           });
           $compile(element.contents())(scope);
