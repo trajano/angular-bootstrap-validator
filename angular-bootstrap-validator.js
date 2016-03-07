@@ -1,4 +1,7 @@
-angular.module('angular.bootstrap.validator', ['ui.bootstrap'])
+var NG_HIDE_CLASS = 'ng-hide';
+var NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';
+
+angular.module('angular.bootstrap.validator', [])
   .directive('abvIdentical', function() {
     return {
       scope: {
@@ -39,12 +42,15 @@ angular.module('angular.bootstrap.validator', ['ui.bootstrap'])
   })
   .directive('abvForm', function($compile) {
     return {
+      require: 'form',
+      terminal: true,
       compile: (element, attrs) => {
         return {
           pre: (scope, element, attr, controller) => {
-            var formName = attr.name;
+            var formName = controller.$name;
             var formNameSubmittedAnd = formName + '.$submitted && ';
 
+            // disable submit buttons when the form is invalid after submit
             element.find('button[type="submit"]').attr("ng-disabled", formNameSubmittedAnd + formName + '.$invalid');
             element.attr('novalidate', 'novalidate');
 
@@ -67,13 +73,13 @@ angular.module('angular.bootstrap.validator', ['ui.bootstrap'])
 
                 // add feedback icons
                 if ($(formGroup).hasClass('has-feedback')) {
-                  control.after('<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="' + formNameSubmittedAnd + formName + '.' + controlName + '.$valid' + '" aria-hidden="true"></span>');
-                  control.after('<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="' + formNameSubmittedAnd + formName + '.' + controlName + '.$invalid' + '" aria-hidden="true"></span>');
+                  control.after('<span class="glyphicon glyphicon-ok form-control-feedback" ng-if="' + formNameSubmittedAnd + formName + '.' + controlName + '.$valid' + '" aria-hidden="true"></span>');
+                  control.after('<span class="glyphicon glyphicon-remove form-control-feedback" ng-if="' + formNameSubmittedAnd + formName + '.' + controlName + '.$invalid' + '" aria-hidden="true"></span>');
                 }
 
-                // ng-class="{ 'has-error': userForm.email.$invalid }
                 $(formGroup).attr('ng-class', '{"has-error": ' + formNameSubmittedAnd + formName + '.' + controlName + '.$invalid }');
                 // help blocks for error messages
+
                 $(formGroup).find('.help-block[data-abv-error],.help-block[abv-error]').each((index, helpBlock) => {
                   var errorField = $(helpBlock).attr('data-abv-error');
                   if (!errorField) {
@@ -82,14 +88,17 @@ angular.module('angular.bootstrap.validator', ['ui.bootstrap'])
                   $(helpBlock).attr('ng-show', formNameSubmittedAnd + formName + '.' + controlName + '.$error.' + errorField);
                 });
               }
+              //                          element.unbind();
             });
+            //       element.removeAttr('abv-form');
+            //$compile(element.contents())(scope);
+
             // disable native form validation because the validation is handled by Angular
-            $compile(element.contents())(scope);
           },
           post: (scope, element, attr, controller) => {
             var formName = attr.name;
             var formNameSubmittedAnd = formName + '.$submitted && ';
-            // disable submit buttons when the form is invalid after submit
+            $compile(element.contents())(scope);
           }
         };
       }
