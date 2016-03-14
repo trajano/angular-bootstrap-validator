@@ -1,4 +1,5 @@
 'use strict';
+var mainjs = 'angular-bootstrap-validator';
 var gulp = require('gulp');
 
 var babel = require('gulp-babel');
@@ -13,7 +14,7 @@ gulp.task('format-json', function(done) {
 });
 
 gulp.task('format-js', function(done) {
-  return gulp.src('lib/*.js').pipe(esformatter({
+  return gulp.src(mainjs).pipe(esformatter({
     "plugins": ["esformatter-eol-last"]
   })).pipe(gulp.dest('lib'));
 });
@@ -27,14 +28,14 @@ gulp.task('format-gulpfile', function(done) {
 gulp.task('tidy', ['format-json', 'format-js', 'format-gulpfile'], function(done) {});
 
 gulp.task('lint', function(done) {
-  return gulp.src('lib/*.js')
+  return gulp.src(mainjs)
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
 });
 
 gulp.task('default', ['lint'], function(done) {
-  return gulp.src('lib/*.js')
+  return gulp.src(mainjs)
     .pipe(ngAnnotate())
     .pipe(babel({
       presets: ['es2015']
