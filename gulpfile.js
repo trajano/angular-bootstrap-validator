@@ -28,7 +28,23 @@ gulp.task('tidy', ['format-json', 'format-js'], function() {});
 
 gulp.task('lint', function() {
   return gulp.src(mainjs)
-    .pipe(esLint())
+    .pipe(esLint({
+      useEslintrc: false,
+      "parserOptions": {
+        "ecmaVersion": 6
+      },
+      "plugins": [
+        "angular"
+      ],
+      "extends": ["eslint:recommended", "angular"],
+      "envs": ["angular/angular"],
+      "rules": {
+        'angular/angularelement': 0
+      },
+      "globals": {
+        '$': true
+      }
+    }))
     .pipe(esLint.format())
     .pipe(esLint.failAfterError());
 });

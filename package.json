@@ -19,21 +19,6 @@
     "gulp-minify": "*",
     "gulp-ng-annotate": "*"
   },
-  "eslintConfig": {
-    "parserOptions": {
-      "ecmaVersion": 6
-    },
-    "plugins": [
-      "angular"
-    ],
-    "extends": "angular",
-    "env": {
-      "angular/angular": true
-    },
-    "rules": {
-      "angular/angularelement": 0
-    }
-  },
   "description": "Angular Bootstrap Validator",
   "bugs": {
     "url": "https://github.com/trajano/angular-bootstrap-validator/issues"
