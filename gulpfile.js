@@ -1,40 +1,39 @@
 'use strict';
-var mainjs = 'angular-bootstrap-validator';
+var mainjs = ['angular-bootstrap-validator.js'];
 var gulp = require('gulp');
 
-var babel = require('gulp-babel');
-var esformatter = require('gulp-esformatter');
-var eslint = require('gulp-eslint');
-var jsonFormat = require('gulp-json-format');
-var minify = require('gulp-minify');
-var ngAnnotate = require('gulp-ng-annotate');
+var babel = require('gulp-babel'),
+  eol = require('gulp-eol'),
+  esFormatter = require('gulp-esformatter'),
+  esLint = require('gulp-eslint'),
+  jsonFormat = require('gulp-json-format'),
+  minify = require('gulp-minify'),
+  ngAnnotate = require('gulp-ng-annotate');
 
-gulp.task('format-json', function(done) {
-  return gulp.src('*.json').pipe(jsonFormat(4)).pipe(gulp.dest('.'));
+gulp.task('format-json', function() {
+  return gulp.src(['package.json', '*.json'])
+    .pipe(jsonFormat(2))
+    .pipe(eol())
+    .pipe(gulp.dest('.'));
 });
 
-gulp.task('format-js', function(done) {
-  return gulp.src(mainjs).pipe(esformatter({
-    "plugins": ["esformatter-eol-last"]
-  })).pipe(gulp.dest('lib'));
+gulp.task('format-js', function() {
+  return gulp.src('*.js')
+    .pipe(esFormatter())
+    .pipe(eol())
+    .pipe(gulp.dest('.'));
 });
 
-gulp.task('format-gulpfile', function(done) {
-  return gulp.src('gulpfile.js').pipe(esformatter({
-    "plugins": ["esformatter-eol-last"]
-  })).pipe(gulp.dest('.'));
-});
+gulp.task('tidy', ['format-json', 'format-js'], function() {});
 
-gulp.task('tidy', ['format-json', 'format-js', 'format-gulpfile'], function(done) {});
-
-gulp.task('lint', function(done) {
+gulp.task('lint', function() {
   return gulp.src(mainjs)
-    .pipe(eslint())
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
+    .pipe(esLint())
+    .pipe(esLint.format())
+    .pipe(esLint.failAfterError());
 });
 
-gulp.task('default', ['lint'], function(done) {
+gulp.task('default', ['lint'], function() {
   return gulp.src(mainjs)
     .pipe(ngAnnotate())
     .pipe(babel({
