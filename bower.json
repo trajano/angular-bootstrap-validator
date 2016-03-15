@@ -24,6 +24,7 @@
     "docs-assets",
     "LICENSE",
     "gulpfile.js",
+    "Package.js",
     "*.html",
     "test",
     "tests"
