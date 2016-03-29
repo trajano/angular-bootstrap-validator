@@ -74,12 +74,12 @@ gulp.task('lint', function() {
 gulp.task('default', ['lint'], function() {
   return gulp.src(srcs)
     .pipe(sourcemaps.init())
-    .pipe(iife())
+        .pipe(iife())
     .pipe(concat('angular-bootstrap-validator.js'))
-    .pipe(ngAnnotate())
     .pipe(babel({
       presets: ['es2015']
     }))
+    .pipe(ngAnnotate())
     .pipe(uglify())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('.'))
