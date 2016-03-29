@@ -19,18 +19,19 @@
   "ignore": [
     "**/.*",
     "_*",
+    "src/*",
     "node_modules",
     "bower_components",
     "docs-assets",
     "LICENSE",
     "gulpfile.js",
-    "Package.js",
+    "package.js",
     "*.html",
     "test",
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.5.0",
+    "angular": "~1.4.0",
     "jquery": "~1.11.3"
   },
   "moduleType": [
