@@ -1,0 +1,7 @@
+.*
+*.iml
+bower.json
+gulpfile.js
+package.js
+spec/
+src/
